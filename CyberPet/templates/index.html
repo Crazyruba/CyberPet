@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CyberPet Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        img { max-width: 100%; }
+        .button { padding: 10px; background-color: #4CAF50; color: white; text-decoration: none; }
+        @media (max-width: 600px) { table, img { width: 100%; } }
+    </style>
+</head>
+<body>
+    <h1>CyberPet Dashboard</h1>
+    <h2>CyberViking Status: Level {{ results.viking_level }}</h2>
+    <p>{{ results.viking_level | description }}</p>
+    <h2>Scanresultaten Grafiek</h2>
+    <img src="data:image/png;base64,{{ results.graph }}" alt="Scan Results Graph">
+    <h2>Gescande apparaten</h2>
+    <table>
+        <tr><th>IP-adres</th><th>Poort</th><th>Tijdstip</th><th>CVE's</th></tr>
+        {% for device in results.devices %}
+        <tr><td>{{ device.ip }}</td><td>{{ device.port }}</td><td>{{ device.timestamp }}</td><td>{{ device.cves }}</td></tr>
+        {% endfor %}
+    </table>
+    <h2>Verzamelde handshakes</h2>
+    <ul>
+        {% for handshake in results.handshakes %}
+        <li>{{ handshake }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Uitgevoerde exploits</h2>
+    <ul>
+        {% for exploit in results.exploits %}
+        <li>{{ exploit }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Gevangen packets</h2>
+    <ul>
+        {% for packet in results.packets %}
+        <li>{{ packet }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Bluetooth-apparaten</h2>
+    <ul>
+        {% for device in results.bt_devices %}
+        <li>{{ device }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Rapport</h2>
+    <a href="/report" class="button">Download PDF Rapport</a>
+    <h2>Controle</h2>
+    <form action="/control" method="post">
+        <button type="submit" name="action" value="start_scan">Start Scan</button>
+    </form>
+</body>
+</html>
